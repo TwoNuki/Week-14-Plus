@@ -2,6 +2,8 @@
 
 type Props = {}
 
+//component to create the form to add a recipe
+
 function NewRecipe({}: Props) {
   return (
     <div>

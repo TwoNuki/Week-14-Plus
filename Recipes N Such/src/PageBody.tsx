@@ -10,7 +10,7 @@ function PageBody() {
     const [isToggled, setToggle] = useState(false);
 
 
-
+    //returns the TopBar and changes page content if button is toggled
     return (
         <div>
             <TopBar setToggle={setToggle} isToggled={isToggled}/>

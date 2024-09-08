@@ -15,6 +15,7 @@ type Props = {
 //let imagePath = 'images/';
 
 
+//using recipe as a prop, displays the list of recipes as cards. will use bootstrap so no styling currently
 function RecipeCard({recipe}: Props) {
 
     const ingredientsList = recipe.ingredients.map((ingredient, i) => <li key={i}>{ingredient}</li>);
