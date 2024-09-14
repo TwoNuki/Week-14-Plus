@@ -1,10 +1,16 @@
 //import CoffeeJelly from 'src/assets/Coffee-Jelly-4800-I-1.jpg'
+//import { useId } from "react"
+
+// let id1 = useId();
+// let id2 = useId();
+// let id3 = useId();
 
 //where the array of recipes is currently stored
 let Recipes = [
     {
         'title': "Coffee Jelly",
-        'id': "22fd0161-e9f2-4ef3-807a-ee6689e26b78", 
+        'cooked': false, 
+        'id': `1`, 
         'image': '/images/Coffee-Jelly-4800-I-1.jpg',
         'ingredients': [
             '2½ cups strong-brewed coffee ', 
@@ -22,7 +28,8 @@ let Recipes = [
     },
     {
         'title': "Crockpot BBQ Pulled Chicken",
-        'id': "5d798404-9c1e-4d2a-b4d4-10e5dc1ea711", 
+        'cooked': false, 
+        'id': `2`, 
         'image': "/images/Crockpot-BBQ-Chicken1.jpg",
         'ingredients': [
             '3 lbs chicken breasts, (boneless, skinless), about 5-6 count', 
@@ -40,7 +47,8 @@ let Recipes = [
     },
     {
         'title': "Tuscan Chicken Gnocchi", 
-        'id': "9a825e52-c320-49b9-9771-f968d237032b", 
+        'cooked': false, 
+        'id': `3`, 
         'image': "/images/k_Photo_Recipes_2024-07-tuscan-chicken-gnocchi_Tuscan-Chicken-Gnocchi-.jpg",
         'ingredients': [
             '1 medium shallot', 
@@ -68,6 +76,16 @@ let Recipes = [
 ];
 
 export default Recipes
+
+//moved Recipe type to database to export easier instead of having it local in every file
+export type Recipe =     {
+    title: string, 
+    cooked: boolean, 
+    id: string, 
+    image: string, 
+    ingredients: Array<string>, 
+    instructions: Array<string>
+  }
 
 /*empty object
     {
