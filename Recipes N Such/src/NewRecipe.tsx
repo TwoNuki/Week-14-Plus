@@ -1,7 +1,7 @@
 //import React from 'react'
+import { Button, Modal } from "react-bootstrap"
 import { Recipe } from "./assets/RecipeDB"
-
-import { useId } from "react"
+import { useId, useState } from "react"
 
 type Props = {
   setRecipes: Function
@@ -61,9 +61,14 @@ function NewRecipe({recipes, setRecipes, setToggle, isToggled}: Props) {
       }
       ]
     )
-    alert('Added Tamales');
+    //alert('Added Tamales');
     handleToggle();
   }
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <div>
@@ -87,9 +92,25 @@ function NewRecipe({recipes, setRecipes, setToggle, isToggled}: Props) {
   </form> */}
 
   {/* changed form temporarily to a button that adds tamales to the list */}
-  <button onClick={addNewItem}>Add</button>
+  {/* <button onClick={addNewItem}>Add</button> */}
+
+  <Button variant="danger" onClick={handleShow}>
+        Add Tamales
+      </Button>
       
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Recipe Added</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Tamales Added To List</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => {handleClose(); addNewItem()}}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
+    
   )
 }
 

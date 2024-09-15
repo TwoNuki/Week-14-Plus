@@ -3,7 +3,13 @@ import RecipeList from './RecipeList'
 import NewRecipe from './NewRecipe'
 import TopBar from './TopBar';
 import Recipes from './assets/RecipeDB';
+import styled from 'styled-components';
 
+
+const StyledContainer = styled.div` width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;`;
 
 function PageBody() {
 
@@ -19,10 +25,15 @@ function PageBody() {
     // console.log(recipes[0]);
     // console.log(setRecipes);
     return (
-        <div>
+        <>
+        
+        <StyledContainer>
             <TopBar setToggle={setToggle} isToggled={isToggled}/>
+            
             {isToggled ? <NewRecipe recipes={recipes} setRecipes={setRecipes} setToggle={setToggle} isToggled={isToggled}/> : <RecipeList recipes={recipes} setRecipes={setRecipes} />}
-        </div>
+        </StyledContainer>
+        </>
+        
     )
 }
 
