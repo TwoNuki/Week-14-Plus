@@ -1,6 +1,8 @@
 //import { useState } from 'react'
 import './App.css'
 import 'bootstrap'
+//import { Modal } from 'react-bootstrap'
+//import React, { useId, useState } from "react"
 
 type Props = {
   setToggle: Function
@@ -8,20 +10,20 @@ type Props = {
 }
 
 
-function TopBar({setToggle, isToggled}:Props) {
+function TopBar({ setToggle, isToggled }: Props) {
 
   const handleToggle = () => {
     setToggle(!isToggled);
-}
+  }
 
   //creating a bootstrap menu with buttons to toggle the add new recipe and return to list options
   return (
     <>
       <div className='topBar'>
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
-          <div className="container-fluid">
+          <div className="container-fluid d-flex justify-content-between align-items-center">
             <h1 className="navbar-brand">Recipes N Stuff</h1>
-            <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div>
               <div className="navbar-nav">
                 {/* <a className="nav-link active" aria-current="page" href="#">Home List </a> */}
                 {/* <a className="nav-link" href="#">Add New Recipe</a> */}

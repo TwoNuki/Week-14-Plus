@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 import RecipeList from './RecipeList'
 import NewRecipe from './NewRecipe'
 import TopBar from './TopBar';
@@ -24,16 +24,19 @@ function PageBody() {
     //passed recipes and setRecipes as props for RecipeList
     // console.log(recipes[0]);
     // console.log(setRecipes);
+
+    //TO DO: 
+    //this is going to probably have routes in it so it can link to other pages in a nav bar
     return (
         <>
-        
-        <StyledContainer>
-            <TopBar setToggle={setToggle} isToggled={isToggled}/>
-            
-            {isToggled ? <NewRecipe recipes={recipes} setRecipes={setRecipes} setToggle={setToggle} isToggled={isToggled}/> : <RecipeList recipes={recipes} setRecipes={setRecipes} />}
-        </StyledContainer>
+
+            <StyledContainer>
+                <TopBar setToggle={setToggle} isToggled={isToggled} />
+
+                {isToggled ? <NewRecipe recipes={recipes} setRecipes={setRecipes} setToggle={setToggle} isToggled={isToggled} /> : <RecipeList recipes={recipes} setRecipes={setRecipes} />}
+            </StyledContainer>
         </>
-        
+
     )
 }
 

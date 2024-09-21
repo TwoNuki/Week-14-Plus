@@ -1,7 +1,7 @@
 //import React from 'react'
-import { Button, Modal } from "react-bootstrap"
+import { Button, Form, Modal } from "react-bootstrap"
 import { Recipe } from "./assets/RecipeDB"
-import { useId, useState } from "react"
+import React, { useId, useState } from "react"
 
 type Props = {
   setRecipes: Function
@@ -13,104 +13,154 @@ type Props = {
 
 //component to create the form to add a recipe
 
-function NewRecipe({recipes, setRecipes, setToggle, isToggled}: Props) {
+function NewRecipe({ recipes, setRecipes, setToggle, isToggled }: Props) {
 
   const id = useId()
   const handleToggle = () => {
     setToggle(!isToggled);
-}
-  //temp function to add tamales to list because of lack of dynamic form
-  function addNewItem(): void {
-
-    //adding recipe to the array and using the spread method to set the state to a copy of the array with new item added
-    
-    setRecipes(
-      [
-        ...recipes, 
-        {
-          'title': "Tamales with Assorted Dips", 
-          'cooked': false, 
-          'id': `${id}`, 
-          'image': "/images/Tamales.jpg", 
-          'ingredients': ['2 pounds tomato', 
-            '8 ounces onion', 
-            '12 stalks fresh cilantro', 
-            '1 teaspoon chopped garlic', 
-            '8 ounces canned, diced chilies, undrained', 
-            '1 cup water', 
-            '1/2 cup olive oil', 
-            '1 cup chicken broth', 
-            '2 cups maseca flour', 
-            '12 ounces shredded, cooked pork', 
-            '16 corn husks', 
-            'assorted dips'], 
-          'instructions': [
-            'Separate corn husks and soak in a large bowl of water. A heavy plate can be used to keep husks submerged.', 
-            'Dice tomatoes, onion and cilantro. Place in a saucepan with a lid. Add garlic, canned chilies and water.', 
-            'Heat to boiling, cover and reduce heat to low.', 
-            'Pour olive oil and chicken broth into a mixing bowl. Add flour cup at a time and mix with a fork to form a soft dough.', 
-            'Pour salsa into a colander to drain. Place in a blender and puree.', 
-            'Remove corn husks from water and dry with a paper towel.', 
-            'With you fingers, spread masa dough in the center of the corn husk leaving inch of the side edges and 1 inches of the top and bottom edges uncovered.', 
-            'Spread 1 teaspoon salsa down the center of the dough. Top with shredded pork.', 
-            'Roll corn husk into a cylinder. Tie both ends.', 
-            'Place rolled tamales in a steamer basket. Heat water under basket to boiling. Cover and reduce heat to medium. Steam for one hour. Add additional water if necessary.', 
-            'Tamales are done when the masa dough no longer sticks to the corn husk.', 
-            'Serve with assorted dips.'
-          ]
-      }
-      ]
-    )
-    //alert('Added Tamales');
-    handleToggle();
   }
 
+
+  //modal junk
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+
+  //end modal junk
+
+  // constants for allowing the form to take the proper values from the initial state for each value of the recipe and update them before adding them to the array
+
+  const [formValues, setFormValues] = useState({
+    'title': "",
+    'cooked': false,
+    'id': `${id}`,
+    'ingredients': [],
+    'instructions': []
+  })
+
+  const [file, setFile] = useState<string>();
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      console.log(event.target.files[0])
+      setFile(URL.createObjectURL(event.target.files[0]))
+    }
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setFormValues({
+    ...formValues,
+    [event.target.name]: event.target.value
+  })
+
+  const handleLists = (event: React.FocusEvent<HTMLTextAreaElement>) => {
+    const text = event.target.value;
+    let list = text.split(String.fromCharCode(10));
+    let cleanList: string[] = [];
+    list.forEach((Element: string) => {
+      if (Element) {
+        cleanList.push(Element);
+      }
+    });
+    setFormValues({
+      ...formValues,
+      [event.target.name]: cleanList
+    });
+  }
+
+  const submit = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setRecipes(
+      [
+        ...recipes,
+        {
+          'title': formValues["title"],
+          'cooked': formValues["cooked"],
+          'id': `${id}`,
+          'image': file,
+          'ingredients': formValues["ingredients"],
+          'instructions': formValues["instructions"]
+        }
+      ]
+    )
+    handleShow();
+  }
+
+  const handleBoolean = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormValues({
+      ...formValues,
+      [event.target.name]: event.target.checked
+    })
+  }
+
+  //currently commented function to possibly clear form after it is submitted so page will not have to change once filled out and submitted
+
+  // const clearFinishedForm = () => {
+
+  // }
+
   return (
     <div>
-      {/* <form method="post">
-       <label>
-    Title:
-    <input name="submitted-name" />
-  </label><br></br>
-  <label>
-    Image:
-    <input type="file" accept="image/png, image/jpg" />
-  </label><br></br>
-  <label>
-    Ingredients (Separated by commas):
-    <textarea name="ingredients" />
-  </label><br></br>
-  <label>
-    Instructions (Separated by commas):
-    <input name="instructions" />
-  </label>
-  </form> */}
 
-  {/* changed form temporarily to a button that adds tamales to the list */}
-  {/* <button onClick={addNewItem}>Add</button> */}
+      {/* react bootstrap form that will take the information matching the values from recipes and add them to the array on submit */}
 
-  <Button variant="danger" onClick={handleShow}>
-        Add Tamales
-      </Button>
-      
+      <Form>
+        <Form.Group className="mb-3" controlId="formRecipeTitle">
+          <Form.Label>Recipe Title</Form.Label>
+          <Form.Control type="text" placeholder="Recipe Title" name="title" onChange={handleChange} />
+          <Form.Text className="text-muted">
+
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group controlId="formFile" className="mb-3">
+          <Form.Label>Recipe Image</Form.Label>
+          <Form.Control type="file" accept=".jpg, .jpeg, .png, .webp, .bmp" name="image" onChange={handleFileChange} />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formRecipeIngredients">
+          <Form.Label>Ingredients</Form.Label>
+          <Form.Control as="textarea" rows={10} placeholder="Type Ingredients Here" name="ingredients" onBlur={handleLists} />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formRecipeInstructions">
+          <Form.Label>Instructions</Form.Label>
+          <Form.Control as="textarea" rows={10} placeholder="Type Instructions Here" name="instructions" onBlur={handleLists} />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check type="checkbox" label="Have I Cooked This?" name="cooked" onChange={handleBoolean} />
+        </Form.Group>
+
+        <Button variant="primary" type="submit" onClick={submit}>
+          Submit
+        </Button>
+
+      </Form>
+
+
+      {/* modal for giving the submit button feedback after adding a new recipe, indicates that the recipe was properly added */}
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Recipe Added</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Tamales Added To List</Modal.Body>
+        <Modal.Body>{formValues["title"]} added to Recipes</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => {handleClose(); addNewItem()}}>
+          <Button variant="secondary" onClick={() => {
+            handleClose();
+            handleToggle();
+          }}>
             Close
           </Button>
         </Modal.Footer>
       </Modal>
+
+
+
     </div>
-    
+
   )
 }
 
