@@ -1,5 +1,7 @@
 //import CoffeeJelly from 'src/assets/Coffee-Jelly-4800-I-1.jpg'
 //import { useId } from "react"
+import axios from "axios"
+import { useEffect } from "react"
 
 // let id1 = useId();
 // let id2 = useId();
@@ -75,12 +77,12 @@ let Recipes = [
     }
 ];
 
+
 export default Recipes
 
 //moved Recipe type to database to export easier instead of having it local in every file
 export type Recipe =     {
     title: string, 
-    cooked: boolean, 
     id: string, 
     image: string, 
     ingredients: Array<string>, 

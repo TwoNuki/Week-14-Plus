@@ -1,7 +1,7 @@
 //import React from 'react'
 import RecipeCard from './RecipeCard'
 //import Recipes from './assets/RecipeDB'
-import { Recipe } from "./assets/RecipeDB"
+import { Recipe } from "../assets/RecipeDB"
 
 
 type Props = {

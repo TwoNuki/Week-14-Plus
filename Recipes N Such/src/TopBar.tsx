@@ -17,6 +17,9 @@ function TopBar({ setToggle, isToggled }: Props) {
   }
 
   //creating a bootstrap menu with buttons to toggle the add new recipe and return to list options
+
+  /*TO DO: fix navebar to be able to have buttons specifically for the "add new" and "update" pages, as well as a "home" button
+  also fix the bootstrap styling so the page is responsive*/
   return (
     <>
       <div className='topBar'>
