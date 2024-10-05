@@ -20,7 +20,7 @@ function RecipeList({ recipes, setRecipes, url, deleteRecipe, getRecipes }: Prop
   console.log(recipes);
   return (
     <div className="recipeList">
-      <h3>My Recipes</h3>
+      <h3 className='mb-3'>My Recipes</h3>
       <Row>
         {recipes.map(recipe => (
           <Col key={recipe.id} xs={12} sm={6} md={4} className="mb-4">

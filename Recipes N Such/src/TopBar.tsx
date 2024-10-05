@@ -6,9 +6,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 type Props = {};
 
+//shows the navigation bar, using react router for the page links and styled with bootstrap
 function TopBar({}: Props) {
   return (
-    <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+    <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary mb-4" >
       <Container>
         <Navbar.Brand as={Link} to="/">Recipes N Stuff</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

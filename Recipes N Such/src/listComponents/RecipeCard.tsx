@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, Card, ListGroup } from "react-bootstrap";
 
 type Props = {
   deleteRecipe: Function;
   getCurrentRecipe: Function;
 };
 
-//using recipe as a prop, displays the list of recipes as cards. will use bootstrap so no styling currently
-function RecipeCard({
-  deleteRecipe,
-  getCurrentRecipe,
-}: Props) {
+// displays the recipe in a card styled with bootstrap
+function RecipeCard({ deleteRecipe, getCurrentRecipe }: Props) {
   const recipeIndex = useParams()["key"];
   const [recipe, setRecipe] = useState({
     title: "",
@@ -26,41 +23,44 @@ function RecipeCard({
       setRecipe(await getCurrentRecipe(recipeIndex));
     };
     fetchRecipe();
-  }, []);
+  }, [recipeIndex, getCurrentRecipe]);
 
-  console.log(recipe);
   const ingredientsList = recipe.ingredients.map((ingredient, i) => (
-    <li key={i}>{ingredient}</li>
+    <ListGroup.Item key={i}>{ingredient}</ListGroup.Item>
   ));
-  const instructions = recipe.instructions.map((instruction, i) => (
-    <li key={i}>{instruction}</li>
+  const instructionsList = recipe.instructions.map((instruction, i) => (
+    <ListGroup.Item key={i}>{instruction}</ListGroup.Item>
   ));
 
   return (
-    <div id={recipe.id}>
-      <h2>{recipe.title}</h2>
-
-      <br></br>
-      <img src={`${recipe.image}`} alt="food" />
-      <h5>Ingredients</h5>
-      <ul>{ingredientsList}</ul>
-      <h5>Instructions</h5>
-      <ul>{instructions}</ul>
-
-      <Link to={`/${recipe.id}/update`}>
-        <Button variant="success" className="updateButton">
-          Update
+    <Card style={{ width: "60rem" }}>
+      <Card.Img variant="top" src={recipe.image} alt="food" />
+      <Card.Body>
+        <Card.Title>{recipe.title}</Card.Title>
+        <Card.Subtitle className="mt-5 mb-2 text-muted">
+          Ingredients
+        </Card.Subtitle>
+        <ListGroup className="list-group-flush">{ingredientsList}</ListGroup>
+        <Card.Subtitle className="mt-5 mb-2 text-muted">
+          Instructions
+        </Card.Subtitle>
+        <ListGroup className="list-group-flush">{instructionsList}</ListGroup>
+      </Card.Body>
+      <Card.Body>
+        <Link to={`/${recipe.id}/update`}>
+          <Button variant="success" className="updateButton">
+            Update
+          </Button>
+        </Link>
+        <Button
+          variant="danger"
+          className="deleteButton"
+          onClick={() => deleteRecipe(recipe.id)}
+        >
+          Delete
         </Button>
-      </Link>
-
-      <Button
-        variant="danger"
-        className="deleteButton"
-        onClick={() => deleteRecipe(recipe.id)}
-      >
-        Delete
-      </Button>
-    </div>
+      </Card.Body>
+    </Card>
   );
 }
 
