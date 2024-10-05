@@ -1,45 +1,27 @@
-//import { useState } from 'react'
-import './App.css'
-import 'bootstrap'
-//import { Modal } from 'react-bootstrap'
-//import React, { useId, useState } from "react"
+//import React from 'react';
+import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-type Props = {
-  setToggle: Function
-  isToggled: Boolean
-}
+type Props = {};
 
-
-function TopBar({ setToggle, isToggled }: Props) {
-
-  const handleToggle = () => {
-    setToggle(!isToggled);
-  }
-
-  //creating a bootstrap menu with buttons to toggle the add new recipe and return to list options
-
-  /*TO DO: fix navebar to be able to have buttons specifically for the "add new" and "update" pages, as well as a "home" button
-  also fix the bootstrap styling so the page is responsive*/
+function TopBar({}: Props) {
   return (
-    <>
-      <div className='topBar'>
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
-          <div className="container-fluid d-flex justify-content-between align-items-center">
-            <h1 className="navbar-brand">Recipes N Stuff</h1>
-            <div>
-              <div className="navbar-nav">
-                {/* <a className="nav-link active" aria-current="page" href="#">Home List </a> */}
-                {/* <a className="nav-link" href="#">Add New Recipe</a> */}
-                <button type="button" onClick={handleToggle}>{isToggled ? "Return To List" : "Add New Recipe"}</button>
-              </div>
-            </div>
-          </div>
-        </nav>
-        <hr />
-      </div>
-
-    </>
-  )
+    <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand as={Link} to="/">Recipes N Stuff</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link as={Link} to="/">Home List</Nav.Link>
+            <Nav.Link as={Link} to="/addNew">Add New Recipe</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
 }
 
-export default TopBar
+export default TopBar;
+

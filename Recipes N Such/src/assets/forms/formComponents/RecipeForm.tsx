@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, MouseEventHandler, useState } from "react";
+import React, { MouseEventHandler } from "react";
 import RecipeTitle from "./RecipeTitle";
 import RecipeImage from "./RecipeImage";
 import RecipeIngredients from "./RecipeIngredients";
@@ -19,26 +19,23 @@ type Props = {
 
 function RecipeForm(propsIn: Props) {
   const {
-    setRecipes,
-    recipes,
-    handleClose,
-    handleShow,
     formValues,
     setFormValues,
     submit,
     currentRecipe,
   } = { ...propsIn };
+
   // constants for allowing the form to take the proper values from the initial state for each value of the recipe and update them before adding them to the array
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      console.log(event.target.files[0]);
-      setFormValues({
-        ...formValues,
-        [event.target.name]: URL.createObjectURL(event.target.files[0]),
-      });
-    }
-  };
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files) {
+  //     console.log(event.target.files[0]);
+  //     setFormValues({
+  //       ...formValues,
+  //       [event.target.name]: URL.createObjectURL(event.target.files[0]),
+  //     });
+  //   }
+  // };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setFormValues({
@@ -60,14 +57,8 @@ function RecipeForm(propsIn: Props) {
       [event.target.name]: cleanList,
     });
   };
-
-  const handleBoolean = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValues({
-      ...formValues,
-      [event.target.name]: event.target.checked,
-    });
-  };
-
+console.log(currentRecipe?.ingredients.join("\r\n"));
+console.log(currentRecipe?.instructions.join("\r\n"));
   return (
     <>
       {/* react bootstrap form that will take the information matching the values from recipes and add them to the array on submit */}
@@ -77,18 +68,15 @@ function RecipeForm(propsIn: Props) {
 
         <RecipeTitle title={currentRecipe?.title} handleChange={handleChange} />
 
-        <RecipeImage
-          image={currentRecipe?.image}
-          handleFileChange={handleFileChange}
-        />
+        <RecipeImage image={currentRecipe?.image} handleChange={handleChange} />
 
         <RecipeIngredients
-          ingredients={currentRecipe?.ingredients}
+          ingredients={currentRecipe?.ingredients.join("\r\n")}
           handleLists={handleLists}
         />
 
         <RecipeInstructions
-          instructions={currentRecipe?.instructions}
+          instructions={currentRecipe?.instructions.join("\r\n")}
           handleLists={handleLists}
         />
 

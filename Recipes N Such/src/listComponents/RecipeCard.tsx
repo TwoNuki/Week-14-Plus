@@ -1,16 +1,34 @@
-import { MouseEvent } from "react";
-import { Recipe } from "../assets/RecipeDB";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 type Props = {
-  recipe: Recipe;
-  setRecipes: Function;
-  recipes: Array<Recipe>;
+  deleteRecipe: Function;
+  getCurrentRecipe: Function;
 };
 
 //using recipe as a prop, displays the list of recipes as cards. will use bootstrap so no styling currently
-function RecipeCard({ recipe, recipes, setRecipes }: Props) {
-  console.log(recipe.ingredients);
-  console.log(recipe.instructions);
+function RecipeCard({
+  deleteRecipe,
+  getCurrentRecipe,
+}: Props) {
+  const recipeIndex = useParams()["key"];
+  const [recipe, setRecipe] = useState({
+    title: "",
+    id: "",
+    image: "",
+    ingredients: [""],
+    instructions: [""],
+  });
+
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      setRecipe(await getCurrentRecipe(recipeIndex));
+    };
+    fetchRecipe();
+  }, []);
+
+  console.log(recipe);
   const ingredientsList = recipe.ingredients.map((ingredient, i) => (
     <li key={i}>{ingredient}</li>
   ));
@@ -18,45 +36,9 @@ function RecipeCard({ recipe, recipes, setRecipes }: Props) {
     <li key={i}>{instruction}</li>
   ));
 
-  //function for the delete button to remove a recipe based on its id
-  function deleteRecipe(event: MouseEvent): void {
-    event.preventDefault();
-
-    let deleteButton = event.target as HTMLButtonElement;
-    let parentDiv = deleteButton.parentNode as HTMLDivElement;
-    let recipeToDelete = parentDiv.id as string;
-
-    setRecipes(recipes.filter((recipe) => recipe.id !== recipeToDelete));
-  }
-
-  //function for updating if a recupe has been cooked
-  // function updateCooked(event: ChangeEvent<HTMLInputElement>): void {
-  //   const updatedRecipes = [...recipes]
-  //   let updateButton = event.target as HTMLInputElement;
-  //   let parentLabel = updateButton.parentNode as HTMLLabelElement;
-  //   let parentDiv = parentLabel.parentNode as HTMLDivElement;
-  //   let recipeid = parentDiv.id as string;
-
-  //   const recipe = updatedRecipes.find(
-  //     el => el.id === recipeid
-  //   ) as Recipe;
-
-  //   recipe.cooked = updateButton.checked;
-
-  //   setRecipes(updatedRecipes);
-
-  // }
-
-  //added delete button and checkbox with ternary statement to either delete a recipe or update if it's been cooked or not
-
-  //TO DO:
-  //add preview recipe cards to main page, with routes to the complete recipe when someone clicks on a button in the preview card. (contains title, image, first few ingredients)
-
   return (
     <div id={recipe.id}>
       <h2>{recipe.title}</h2>
-
-      {/* TO DO: replace checkbox with a form that would allow for the recipe information itself to be updated */}
 
       <br></br>
       <img src={`${recipe.image}`} alt="food" />
@@ -65,8 +47,19 @@ function RecipeCard({ recipe, recipes, setRecipes }: Props) {
       <h5>Instructions</h5>
       <ul>{instructions}</ul>
 
-      {/* <button onClick={updateRecipe}>Update</button> */}
-      <button onClick={deleteRecipe}>Delete</button>
+      <Link to={`/${recipe.id}/update`}>
+        <Button variant="success" className="updateButton">
+          Update
+        </Button>
+      </Link>
+
+      <Button
+        variant="danger"
+        className="deleteButton"
+        onClick={() => deleteRecipe(recipe.id)}
+      >
+        Delete
+      </Button>
     </div>
   );
 }

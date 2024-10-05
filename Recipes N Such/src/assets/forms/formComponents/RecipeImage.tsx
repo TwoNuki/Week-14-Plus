@@ -3,22 +3,23 @@ import { Form } from "react-bootstrap";
 
 type Props = {
   image?: string, 
-  handleFileChange:ChangeEventHandler
+  handleChange:ChangeEventHandler
 };
 
+//changed from taking a file upload to a image link due to issues with hosting, would cause image to show as a broken link since it was showing as hosted locally instead of on the api
 const RecipeImage = (propsIn: Props) => {
-  const { image, handleFileChange } = { ...propsIn };
+  const { image, handleChange } = { ...propsIn };
   return (
     <>
           {image ? <img src={`${image}`} alt="food" />: ""}
       <Form.Group controlId="formFile" className="mb-3">
         <Form.Label>Recipe Image</Form.Label>
         <Form.Control
-          type="file"
-          accept=".jpg, .jpeg, .png, .webp, .bmp"
+          type="text"
+          //accept=".jpg, .jpeg, .png, .webp, .bmp"
           name="image"
-          value={image}
-          onChange={handleFileChange}
+          defaultValue={image}
+          onChange={handleChange}
         />
       </Form.Group>
     </>

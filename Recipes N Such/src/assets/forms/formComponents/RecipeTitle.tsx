@@ -17,7 +17,7 @@ const RecipeTitle = (propsIn: Props) => {
           type="text"
           placeholder="Recipe Title"
           name="title"
-          value={title}
+          defaultValue={title}
           onChange={handleChange}
         />
         <Form.Text className="text-muted"></Form.Text>

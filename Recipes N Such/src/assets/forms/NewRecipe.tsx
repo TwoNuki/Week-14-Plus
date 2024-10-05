@@ -3,26 +3,23 @@ import { Button, Modal } from "react-bootstrap";
 import { Recipe } from "../RecipeDB";
 import React, { useId, useState } from "react";
 import RecipeForm from "./formComponents/RecipeForm";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   setRecipes: Function;
   recipes: Array<Recipe>;
-  setToggle: Function;
-  isToggled: Boolean;
+  url: string;
 };
 
 //component to create the form to add a recipe
 
-function NewRecipe({ recipes, setRecipes, setToggle, isToggled }: Props) {
-  const id = useId();
-  const handleToggle = () => {
-    setToggle(!isToggled);
-  };
+function NewRecipe({ recipes, setRecipes, url }: Props) {
+  let id = useId();
+  let navigate = useNavigate();
 
-  const [formValues, setFormValues] = useState(
-    {
+  const [formValues, setFormValues] = useState({
     title: "",
-    id: `${id}`,
+    id: ``,
     ingredients: [],
     instructions: [],
     image: "",
@@ -34,29 +31,32 @@ function NewRecipe({ recipes, setRecipes, setToggle, isToggled }: Props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const postNewRecipe = async (newRecipie: Recipe) => {
+    await fetch(`${url}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newRecipie),
+    });
+  };
 
   const submit = (event: React.MouseEvent) => {
     event.preventDefault();
-    setRecipes([
-      ...recipes,
-      {
-        title: formValues["title"],
-        id: `${id}`,
-        image: formValues['image'],
-        ingredients: formValues["ingredients"],
-        instructions: formValues["instructions"],
-      },
-    ]);
+
+    let newRecipie = {
+      title: formValues["title"],
+      id: `${id}`,
+      ingredients: formValues["ingredients"],
+      instructions: formValues["instructions"],
+      image: formValues["image"],
+    };
+    setRecipes([...recipes, newRecipie]);
+    postNewRecipe(newRecipie);
     handleShow();
   };
 
   //end modal junk
-
-  //currently commented function to possibly clear form after it is submitted so page will not have to change once filled out and submitted
-
-  // const clearFinishedForm = () => {
-
-  // }
 
   return (
     <div>
@@ -82,7 +82,7 @@ function NewRecipe({ recipes, setRecipes, setToggle, isToggled }: Props) {
             variant="secondary"
             onClick={() => {
               handleClose();
-              handleToggle();
+              navigate("/");
             }}
           >
             Close

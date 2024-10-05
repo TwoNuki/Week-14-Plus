@@ -1,34 +1,40 @@
-//import React from 'react'
-import RecipeCard from './RecipeCard'
-//import Recipes from './assets/RecipeDB'
-import { Recipe } from "../assets/RecipeDB"
-
+//import React from 'react';
+import { Row, Col } from 'react-bootstrap';
+import { Recipe } from "../assets/RecipeDB";
+import ShortCard from './ShortCard';
+import { useEffect } from 'react';
 
 type Props = {
-  setRecipes: Function
-  recipes: Array<Recipe>
-}
+  setRecipes: Function;
+  recipes: Array<Recipe>;
+  url: string;
+  deleteRecipe: Function;
+  getRecipes: Function;
+};
 
-//function to display the recipes
-function RecipeList({recipes, setRecipes}:Props) {
-
-//mapping over the array of objects in RecipeDB to make the list of cards
-//let recipe:Recipe;
-const RenderedRecipes = recipes.map((recipe, i) => <tr key={i}><td><RecipeCard recipe={recipe} key={i} recipes={recipes} setRecipes={setRecipes} /></td></tr>);
-// console.log(recipes);
-// console.log(RenderedRecipes);
-
+// function to display the recipes
+function RecipeList({ recipes, setRecipes, url, deleteRecipe, getRecipes }: Props) {
+  useEffect(() => {
+    getRecipes();
+  }, []);
+  console.log(recipes);
   return (
-    <div>
-        <h3>My Recipes</h3>
-         <table>
-            <tbody>
-            {RenderedRecipes}
-            </tbody>
-        </table>
-       
+    <div className="recipeList">
+      <h3>My Recipes</h3>
+      <Row>
+        {recipes.map(recipe => (
+          <Col key={recipe.id} xs={12} sm={6} md={4} className="mb-4">
+            <ShortCard
+              recipe={recipe}
+              setRecipes={setRecipes}
+              url={url}
+              deleteRecipe={deleteRecipe}
+            />
+          </Col>
+        ))}
+      </Row>
     </div>
-  )
+  );
 }
 
-export default RecipeList
+export default RecipeList;
